@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+
+# Serverless
+.serverless
+
+# Dynamodb
+.dynamodb
+
+# Webpack
+.webpack
+
+# Output
+dist
+
+# Local folder
+local

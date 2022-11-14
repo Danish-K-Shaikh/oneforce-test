@@ -1,0 +1,73 @@
+service: serverless-boilerplate
+
+custom:
+  # Our stage is based on what is passed in when running serverless
+  # commands. Or falls back to what we have set in the provider section.
+  stage: ${opt:stage, 'offline'}
+  region: ${opt:region, 'ap-south-1'}
+  bundle:
+    linting: false
+  serverless-offline:
+    httpPort: 4000
+    noPrependStageInUrl: true
+    reloadHandler: true
+  resource:
+    UserTable: user
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  memorySize: 512
+  timeout: 10
+  logRetentionInDays: 90
+  profile: personal
+  logs:
+    httpApi: true
+  httpApi:
+    # metrics: true # Enable if you need
+    cors: true
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:*
+      Resource: "*"
+
+functions:
+  app:
+    handler: src/handler.handler
+    # reservedConcurrency: 100
+    events:
+      - httpApi:
+          path: "/{proxy+}"
+          method: "*"
+
+resources:
+  Resources:
+    UserTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.resource.UserTable}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
+          - AttributeName: dateJoined
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: dateJoinedIndex
+            KeySchema:
+              - AttributeName: dateJoined
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+
+package:
+  individually: true
+
+plugins:
+  - serverless-bundle
+  # - serverless-offline
+  # - serverless-dynamodb-local

@@ -1,0 +1,30 @@
+{
+  "name": "oneforce-test",
+  "version": "1.0.0",
+  "description": "UserApi using lambda, dynamodb",
+  "scripts": {
+    "dev": "nodemon NODE_ENV=development sls offline start --stage offline",
+    "deploy-prod": "nodemon NODE_ENV=production sls deploy --stage prod"
+  },
+  "dependencies": {
+    "aws-lambda": "^1.0.7",
+    "dynamoose": "^3.1.0",
+    "express": "^4.18.2",
+    "helmet": "^5.1.1",
+    "moment": "^2.29.4",
+    "serverless-http": "^3.1.0",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.40",
+    "@types/aws-lambda": "^8.10.108",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.9",
+    "prettier": "^2.7.1",
+    "serverless": "^3.23.0",
+    "serverless-bundle": "^5.5.0",
+    "serverless-dotenv-plugin": "^4.0.2",
+    "serverless-offline": "^11.1.3",
+    "typescript": "^4.8.4"
+  }
+}

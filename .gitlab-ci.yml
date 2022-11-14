@@ -1,0 +1,14 @@
+stages:
+  - deploy
+
+prod:
+  stage: deploy
+  timeout: 20 minutes
+  environment: prod
+  before_script:
+    - docker build -t oneforce-test . --build-arg stage=prod
+  script:
+    - docker run -t -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY oneforce-test
+    - docker system prune -f
+  only:
+    - main

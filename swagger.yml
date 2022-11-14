@@ -1,0 +1,154 @@
+openapi: '3.0.3'
+info:
+  title: User Store - OpenAPI 3.0
+  description: |-
+    This is a sample User store Server based on the OpenAPI 3.0 specification.
+  version: '1.0'
+servers:
+  - url: https://q7yuw6oouk.execute-api.us-east-1.amazonaws.com/
+paths:
+  /user:
+    post:
+      tags:
+        - User
+      summary: Add a new User
+      description: 'Create a new user.'
+      operationId: postUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/User'
+        '422':
+          description: duplicate entry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: User already exists with id {userid}
+                  error:
+                    type: object
+  /user/list?date={date}:
+    get:
+      tags:
+        - User
+      summary: Get list of users by date joined
+      description: Get list of users by date joined
+      operationId: listUsersByDateJoined
+      parameters:
+        - in: query
+          name: date
+          description: 'Joining date of users'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+  /user/{userid}:
+    get:
+      tags:
+        - User
+      summary: Get user by user id
+      description: ''
+      operationId: getUserById
+      parameters:
+        - name: userid
+          in: path
+          description: 'Fetch user by given id'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/User'
+        '404':
+          description: No User found with id ${userid}.
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 11
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        gender:
+          type: string
+          example: 'Male'
+        ipAddress:
+          type: string
+          example: '119.250.218.97'
+        dateJoined:
+          type: number
+          description: User Status
+          example: 1636200155
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  requestBodies:
+    Pet:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/User'
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+ 
