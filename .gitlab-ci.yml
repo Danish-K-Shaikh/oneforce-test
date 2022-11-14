@@ -1,5 +1,9 @@
 default:
   image: docker
+services:
+  - name: docker:dind
+    entrypoint: ["env", "-u", "DOCKER_HOST"]
+    command: ["dockerd-entrypoint.sh"]
 
 stages:
   - deploy
