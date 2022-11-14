@@ -1,6 +1,8 @@
+default:
+  image: docker
+
 stages:
   - deploy
-
 prod:
   stage: deploy
   timeout: 20 minutes
