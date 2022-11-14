@@ -12,7 +12,9 @@ ARG stage
 ENV stage=${stage}
 
 COPY ./ ./
-RUN mkdir layer/nodejs && cp -R node_modules/* layer/nodejs/
+RUN mkdir layer
+RUN mkdir layer/nodejs
+RUN cp -R node_modules/* layer/nodejs/
 
 RUN rm -rf node_modules
 
