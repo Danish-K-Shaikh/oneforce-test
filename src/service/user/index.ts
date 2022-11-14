@@ -20,13 +20,11 @@ class User {
 
   async listUserByDateJoined(param: any) {
     const payload = await validateListUserByDateJoined(param);
-    console.log({ date: payload.date });
     const users = await Model.User.query("dateJoined")
       .eq(parseInt(payload.date))
       .sort("descending")
       .using("dateJoinedIndex")
       .exec();
-    console.log("Getting USERS", users);
     return users;
   }
 }

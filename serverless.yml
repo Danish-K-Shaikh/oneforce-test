@@ -16,11 +16,10 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   memorySize: 512
   timeout: 10
   logRetentionInDays: 90
-  profile: personal
   logs:
     httpApi: true
   httpApi:
@@ -31,6 +30,18 @@ provider:
       Action:
         - dynamodb:*
       Resource: "*"
+
+layers:
+  nodeModules:
+    path: layer/nodejs
+    name: NodeModules
+    description: All the node_modules will be added here (npm install and custom added)
+    compatibleRuntimes:
+      - nodejs16.x
+    retain: false
+    allowedAccounts:
+      - '*' # ALL accounts!
+
 
 functions:
   app:
@@ -66,6 +77,13 @@ resources:
 
 package:
   individually: true
+  exclude:
+    - node_modules/**
+    - .git/**
+    - modules/**
+    - .serverless/**
+    - layer/**
+    - logs/**
 
 plugins:
   - serverless-bundle
